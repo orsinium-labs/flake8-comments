@@ -13,7 +13,7 @@ def get_words(text: str) -> Set[str]:
     text = REX1.sub(r'\1 \2', text)
     text = REX2.sub(r'\1 \2', text).lower()
     text = text.replace('_', ' ')
-    return set(text.split())
+    return set(REX_WORD.findall(text))
 
 
 def get_redundant_comments(

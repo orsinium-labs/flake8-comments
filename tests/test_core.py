@@ -15,6 +15,7 @@ from flake8_comments._core import get_redundant_comments
     ('# hello world', 'def hello_world_example(): pass', True),
     ('# hello world', 'hello_world = something()', True),
     ('# hello world', 'hello_world_example = something()', True),
+    ('# oh hi mark', 'oh = "hi mark"', True),
 
     ('# this is hello world example', 'hello = world', False),
     ('# hello world', 'something = else', False),
