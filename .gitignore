@@ -3,3 +3,6 @@
 __pycache__/
 .venvs/
 .task/
+/.coverage
+/coverage.xml
+/htmlcov/

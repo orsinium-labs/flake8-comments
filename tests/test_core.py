@@ -19,6 +19,7 @@ from flake8_comments._core import get_redundant_comments
     ('# this is hello world example', 'hello = world', False),
     ('# hello world', 'something = else', False),
     ('# an example of\n# hello world', 'hello = world', False),
+    ('# a multiline\n# example of\n# hello world', 'hello = world', False),
     ('# hello world', 'something = else\nhello = world', False),
 ])
 def test_get_redundant_comments(comment: str, code_line: str, expected: bool):

@@ -5,7 +5,7 @@ vars:
   PYTHON_BIN: python3.7
   VENVS: .venvs/
   FLIT_ENV:   "{{.VENVS}}flit"
-  TEST_ENV: "{{.VENVS}}tests"
+  TEST_ENV: "{{.VENVS}}test"
   TESTS_PATH: tests/
 
 env:
@@ -41,6 +41,7 @@ tasks:
         {{.FLIT_ENV}}/bin/flit install
         --python={{.ENV}}/bin/python3
         --deps=production
+        --symlink
         --extras={{.EXTRA}}
 
   pytest:run:
@@ -48,6 +49,6 @@ tasks:
       - task: flit:install
         vars:
           ENV: "{{.TEST_ENV}}"
-          EXTRA: tests
+          EXTRA: test
     cmds:
       - "{{.TEST_ENV}}/bin/pytest {{.ARGS}} {{.TESTS_PATH}}"

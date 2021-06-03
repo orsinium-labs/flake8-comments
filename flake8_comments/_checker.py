@@ -20,4 +20,9 @@ class Checker:
 
     def run(self) -> Iterator[tuple]:
         for comment in get_redundant_comments(self._tokens):
-            yield (comment.start[0], comment.start[1], self._message)
+            yield (
+                comment.start[0],
+                comment.start[1],
+                self._message,
+                type(self),
+            )
