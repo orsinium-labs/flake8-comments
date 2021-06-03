@@ -1,0 +1,53 @@
+# https://taskfile.dev/
+version: "3"
+
+vars:
+  PYTHON_BIN: python3.7
+  VENVS: .venvs/
+  FLIT_ENV:   "{{.VENVS}}flit"
+  TEST_ENV: "{{.VENVS}}tests"
+  TESTS_PATH: tests/
+
+env:
+  FLIT_ROOT_INSTALL: "1"
+
+tasks:
+  venv:create:
+    status:
+      - "test -f {{.ENV}}/bin/activate"
+    cmds:
+      - "{{.PYTHON_BIN}} -m venv {{.ENV}}"
+      - "{{.ENV}}/bin/python3 -m pip install -U pip setuptools wheel"
+  flit:init:
+    status:
+      - "test -f {{.FLIT_ENV}}/bin/flit"
+    deps:
+      - task: venv:create
+        vars:
+          ENV: "{{.FLIT_ENV}}"
+    cmds:
+      - "{{.FLIT_ENV}}/bin/python3 -m pip install flit"
+  flit:install:
+    sources:
+      - pyproject.toml
+      - "{{.ENV}}/bin/activate"
+    deps:
+      - flit:init
+      - task: venv:create
+        vars:
+          ENV: "{{.ENV}}"
+    cmds:
+      - >
+        {{.FLIT_ENV}}/bin/flit install
+        --python={{.ENV}}/bin/python3
+        --deps=production
+        --extras={{.EXTRA}}
+
+  pytest:run:
+    deps:
+      - task: flit:install
+        vars:
+          ENV: "{{.TEST_ENV}}"
+          EXTRA: tests
+    cmds:
+      - "{{.TEST_ENV}}/bin/pytest {{.ARGS}} {{.TESTS_PATH}}"
