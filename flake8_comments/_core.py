@@ -2,6 +2,8 @@ import re
 import tokenize
 from typing import Iterable, Iterator, Set
 
+from ._stop_words import STOP_WORDS
+
 
 REX_WORD = re.compile(r'[A-Za-z]+')
 # https://stackoverflow.com/a/1176023/8704691
@@ -13,7 +15,10 @@ def get_words(text: str) -> Set[str]:
     text = REX1.sub(r'\1 \2', text)
     text = REX2.sub(r'\1 \2', text).lower()
     text = text.replace('_', ' ')
-    return set(REX_WORD.findall(text))
+    words = set(REX_WORD.findall(text))
+    words = {w for w in words if len(w) > 1}
+    words = {w for w in words if w not in STOP_WORDS}
+    return words
 
 
 def get_redundant_comments(
@@ -50,7 +55,7 @@ def get_redundant_comments(
 
         # if we already 2 lines after the comment,
         # check if words in the code has all words from the comment
-        comment_words = set(REX_WORD.findall(comment.string))
+        comment_words = get_words(comment.string)
         if comment_words and not comment_words - code_words:
             yield comment
         code_words = set()

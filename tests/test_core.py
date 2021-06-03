@@ -17,6 +17,12 @@ from flake8_comments._core import get_redundant_comments
     ('# hello world', 'hello_world_example = something()', True),
     ('# oh hi mark', 'oh = "hi mark"', True),
 
+    ('# create user', 'create_user()', True),
+    ('# create a user', 'create_user()', True),
+    ('# create the user', 'create_user()', True),
+    ('# create user', 'create_user(force=True)', True),
+    ('# init data storage', 'DataStorage.init()', True),
+
     ('# this is hello world example', 'hello = world', False),
     ('# hello world', 'something = else', False),
     ('# an example of\n# hello world', 'hello = world', False),
