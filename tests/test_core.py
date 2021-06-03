@@ -17,9 +17,13 @@ from flake8_comments._core import get_redundant_comments
     ('# hello world', 'hello_world_example = something()', True),
 
     ('# this is hello world example', 'hello = world', False),
+    ('# hello world', 'something = else', False),
+    ('# an example of\n# hello world', 'hello = world', False),
+    ('# hello world', 'something = else\nhello = world', False),
 ])
-def test_get_redundant_comments(comment, code_line, expected):
-    readline = iter((comment, code_line)).__next__
+def test_get_redundant_comments(comment: str, code_line: str, expected: bool):
+    lines = comment.splitlines() + code_line.splitlines()
+    readline = iter(lines).__next__
     tokens = tokenize.generate_tokens(readline)
     result = list(get_redundant_comments(tokens))
     assert len(result) == int(expected)

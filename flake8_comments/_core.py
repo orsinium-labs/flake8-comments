@@ -49,7 +49,7 @@ def get_redundant_comments(
             continue
 
         # if we already 2 lines after the comment,
-        # check if words in the code has all words from the comment.
+        # check if words in the code has all words from the comment
         comment_words = set(REX_WORD.findall(comment.string))
         if comment_words and not comment_words - code_words:
             yield comment
