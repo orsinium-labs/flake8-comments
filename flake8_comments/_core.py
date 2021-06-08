@@ -42,10 +42,10 @@ def get_redundant_comments(
                 multiline_comment = True
             continue
 
-        # skip lines without a single-line comment before
+        # skip code lines without a single-line comment before
+        multiline_comment = False
         if comment is None:
             continue
-        multiline_comment = False
 
         # if this is a token on the next line after the comment,
         # extract words from it
